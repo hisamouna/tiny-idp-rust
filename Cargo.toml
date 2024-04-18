@@ -1,9 +1,13 @@
-workspace = { members = [ "tiny-idp","tiny-rp"] }
-[package]
+[workspace]
+members = [ "tiny-idp","tiny-rp"]
+
+[workspace.package]
 name = "tiny-idp-rust"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[dependencies]
+[workspace.dependencies]
+tiny-idp = { path = "tiny-idp", version = "=0.1.0" }
+tiny-rp = { path = "tiny-rp", version = "=0.1.0" }

@@ -1,3 +1,6 @@
+[[bin]]
+name = "tiny-rp"
+
 [package]
 name = "tiny-rp"
 version = "0.1.0"
