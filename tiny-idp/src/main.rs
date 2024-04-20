@@ -31,6 +31,11 @@ fn router() -> Router {
         .route("/login", post(api::login::login))
         .route("/openid-connect/auth", get(api::html::index))
         .route("/openid-connect/auth", post(api::html::index))
+        .route("/openid-connect/token", post(api::token::token))
+        .route(
+            "/openid-connect/introspect",
+            post(api::introspect::introspect),
+        )
         .fallback(handler_404)
 }
 

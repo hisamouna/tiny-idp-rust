@@ -2,14 +2,14 @@ use crate::models::context::USERS;
 use chrono::{Duration, NaiveDate, Utc};
 use rand::Rng;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct AuthCode {
     pub code: String,
     pub user_id: String,
     pub client_id: String,
     pub expires_at: NaiveDate,
     pub used_at: Option<NaiveDate>,
-    redirect_uri: String,
+    pub redirect_uri: String,
 }
 
 impl AuthCode {
@@ -37,13 +37,17 @@ impl AuthCode {
             .iter()
             .any(|auth_code| auth_code.code == self.code)
         {
-            let db = &USERS.lock().unwrap().auth_codes;
-            let index = db
+            println!("AuthCode.update");
+            let index = USERS
+                .lock()
+                .unwrap()
+                .auth_codes
                 .iter()
                 .position(|auth_code| auth_code.code == self.code)
                 .unwrap();
             USERS.lock().unwrap().auth_codes[index] = self;
         } else {
+            println!("AuthCode.save");
             USERS.lock().unwrap().auth_codes.push(self);
         }
     }
@@ -55,7 +59,7 @@ pub fn build(user_id: String, client_id: String, redirect_uri: &String) -> AuthC
     AuthCode::new(code, user_id, client_id, expires_at, redirect_uri.clone())
 }
 
-fn gen_rand() -> String {
+pub fn gen_rand() -> String {
     // 乱数生成器を初期化
     let mut rng = rand::thread_rng();
     // u32の乱数を生成

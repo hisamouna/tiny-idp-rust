@@ -1,5 +1,4 @@
 use crate::api::error;
-use crate::api::redirect::RedirectLoginResponse;
 use crate::models::auth_code;
 use crate::models::context::USERS;
 use crate::models::user::User;
@@ -46,12 +45,6 @@ pub async fn login(
         let auth_code = auth_code::build(user_id, client_id, &redirect_uri);
         let code = auth_code.code.clone();
         auth_code.save();
-        //return Ok(RedirectLoginResponse {
-        //    location: format!(
-        //        "{}?code={}&iss={}&scope={}",
-        //        &redirect_uri, code, issuer, scope
-        //    ),
-        //});
         return Ok(Redirect::to(&format!(
             "{}?code={}&iss={}&scope={}",
             &redirect_uri, code, issuer, scope
